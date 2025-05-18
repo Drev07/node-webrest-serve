@@ -1,28 +1,23 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = __importDefault(require("fs"));
-const http_1 = __importDefault(require("http"));
-const server = http_1.default.createServer((req, res) => {
-    console.log(req.url);
-    // res.writeHead(200, { 'Content-Type': 'text/html'});
-    // res.write('<h1>Hola mudo!!!!!</h1>');
-    // res.end();
-    // const data = { name: 'John Doe', age: 30, city: 'New york'};
-    // res.writeHead(200,{ 'Content-Type': 'applecation/json'});
-    // res.end( JSON.stringify(data));
-    if (req.url === '/') {
-        const htmlFile = fs_1.default.readFileSync('./public/index.html', 'utf-8');
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(htmlFile);
-    }
-    else {
-        res.writeHead(400, { 'Content-Type': 'text/html' });
-        res.end();
-    }
-});
-server.listen(8080, () => {
-    console.log('Server running on port 8080');
-});
+const envs_1 = require("./config/envs");
+const server_1 = require("./presentencion/server");
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    main();
+}))();
+function main() {
+    const server = new server_1.Server({
+        port: envs_1.envs.PORT,
+        public_path: envs_1.envs.PUBLIC_PATH,
+    });
+    server.start();
+}
